@@ -8,6 +8,11 @@ export class SettingsService{
     private settings: Setting[] = [];
     constructor(){}
 
+    consoleLog()
+    {
+        console.log('popo');
+    }
+
     //  SETTERS
 
     /* Add settings categories like player, monsters, map...
