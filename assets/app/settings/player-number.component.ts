@@ -1,5 +1,6 @@
 import {Component, OnChanges} from "@angular/core";
 import {SettingsService} from "./settings.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: "app-player-number",
@@ -8,14 +9,15 @@ import {SettingsService} from "./settings.service";
         <div class="container">
             <div class="row">
                 <div class="col-xs-6 col-xs-offset-3">
-                    <!--<form (ngSubmit)="onSubmit()" #playerNumberForm="ngForm">-->
-                    <!--#playerNumberInput="ngModel"-->
-                    <div class="form-group">
-                            <label for="playerNumber">Nombre de joueurs : </label>
+                    <form (ngSubmit)="onSubmit()" #playerNumberForm="ngForm">
+                        <!--#playerNumberInput="ngModel"-->
+                        <div class="form-group">
+                            <label for="number">Nombre de joueurs : </label>
                             <select class="form-control"
-                                    id="playerNumber"
-                                    name="playerNumber"
+                                    id="number"
+                                    name="number"
                                     [(ngModel)]="playerNumber"
+                                    #number="ngModel"
                                     (click)="changeNumberArray()">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -32,17 +34,20 @@ import {SettingsService} from "./settings.service";
                                    class="form-control"
                                    id="player{{number}}Name"
                                    name="player{{number}}Name"
-                                   required 
-                                   [(ngModel)]="playerNames[number]">
+                                   [(ngModel)]="playerNames[number]"
+                                   #player{{number}}Name="ngModel"
+                                   pattern="^[a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{1,25}$"
+                                   required >
                         </div>
                         <hr>
-                    
-                        <a (click)="addSettings()" [routerLink]="['/settings/playerResume']" class="btn btn-info">Etape suivante</a>
-                    <!--</form>-->
+                        
+                        <button type="submit" class="btn btn-info" [disabled]="!playerNumberForm.form.valid">Etape suivante</button>
+                    </form>
                 </div>
             </div>
         </div>
     `
+
 })
 export class PlayerNumberComponent
 {
@@ -50,12 +55,14 @@ export class PlayerNumberComponent
     playerArray: number[];
     playerNames: any[] = [];
 
-    constructor(private settingsService: SettingsService)
+    constructor(private router: Router,
+                private settingsService: SettingsService)
     {
         this.playerNumber = 1;
         this.playerArray = [1];
     }
 
+    /* Change the number of player when click on the input */
     changeNumberArray()
     {
         this.playerArray = [];
@@ -63,6 +70,15 @@ export class PlayerNumberComponent
             this.playerArray.push(i);
     }
 
+    /* Called function on Submit */
+    onSubmit()
+    {
+        console.log('soumis');
+        this.addSettings();
+        this.router.navigate(['/settings/playerResume']);
+    }
+
+    /* Record datas function */
     addSettings()
     {
         /* Create a player category into settings*/
