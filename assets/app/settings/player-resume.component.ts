@@ -40,14 +40,17 @@ export class PlayerResumeComponent implements OnInit
 
     ngOnInit()
     {
-        // Define the number of player
-        this.playerNumber = this.settingsService.getSettings()['game']['number'];
-        // Create an array with the number of each players
-        for(let i=1; i<= this.playerNumber; i++)
-            this.playerNumbers.push(i);
-        // Define the first player
-        this.first = this.settingsService.rand(1,this.playerNumber);
-        this.settingsService.addSettingsProperty('game', 'first', this.first);
+        if(!this.settingsService.getGameSettings('first'))
+        {
+            // Define the number of player
+            this.playerNumber = this.settingsService.getSettings()['game']['number'];
+            // Create an array with the number of each players
+            for(let i=1; i<= this.playerNumber; i++)
+                this.playerNumbers.push(i);
+            // Define the first player
+            this.first = this.settingsService.rand(1,this.playerNumber);
+            this.settingsService.addSettingsProperty('game', 'first', this.first);
+        }
     }
 
 }
