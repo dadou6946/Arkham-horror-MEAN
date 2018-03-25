@@ -9,31 +9,33 @@ import {SettingsService} from "./settings.service";
 
         <div class="container">
 			<div class="row">
-				<div class="col-xs-3 col-xs-offset-2">
-					<div>Le joueur {{this.first}} doit choisir son investigateur:  </div>
-					<div class="form-group">
-						<div class="form-control">
-							<input type="radio" name="investigator" value="Jenny Barnes" onclick=""><span> Jenny Barnes</span>
-                        </div>
-				        
-			        </div>
-			        <div class="form-group">
-						<div class="form-control">
-				            <input type="radio" name="investigator" value="Francis Sailor" onclick=""><span> Francis Sailor</span>
-						</div>
-			        </div>
-			        <div class="form-group">
-						<div class="form-control">
-				            <input type="radio" name="investigator" value="Joe Diamond" onclick=""><span> Joe Diamond</span>
-						</div>
-			        </div>
-			     	<div class="form-group">
-						<div class="form-control">
-			           		<input type="radio" name="investigator" value="Peggy Green" onclick=""><span> Peggy Green</span>
-			        	</div>
-			        </div>
-			        <a class="btn btn-default" type="submit">Ok</a>
-				</div>
+				<form (ngSubmit)="onSubmit()" #playerNumberForm="ngForm">
+					<div class="col-xs-3 col-xs-offset-2">
+						<div>Le joueur {{this.first}} doit choisir son investigateur:  </div>
+						<div class="form-group">
+							<div class="form-control">
+								<input type="radio" name="investigator" value="Jenny Barnes" onclick=""><span> Jenny Barnes</span>
+	                        </div>
+					        
+				        </div>
+				        <div class="form-group">
+							<div class="form-control">
+					            <input type="radio" name="investigator" value="Francis Sailor" onclick=""><span> Francis Sailor</span>
+							</div>
+				        </div>
+				        <div class="form-group">
+							<div class="form-control">
+					            <input type="radio" name="investigator" value="Joe Diamond" onclick=""><span> Joe Diamond</span>
+							</div>
+				        </div>
+				     	<div class="form-group">
+							<div class="form-control">
+				           		<input type="radio" name="investigator" value="Peggy Green" onclick=""><span> Peggy Green</span>
+				        	</div>
+				        </div>
+				        <button type="submit" class="btn btn-default">Ok</button>
+					</div>
+				</form>
 				<div class="col-xs-5">
 		 			<div id="preview" class="center-block"></div>
 				</div>
@@ -54,9 +56,9 @@ export class ChooseCharactersComponent implements OnInit
 	ngOnInit()
     {
         // Define the first player
-        this.first = this.settingsService.getSettings()['game']['first'];
+        this.first = this.settingsService.getGameSettings('first');
         // and the number of player
-        this.playerNumber = this.settingsService.getSettings()['game']['number'];
+        this.playerNumber = this.settingsService.getGameSettings('number');
 
         // console.log();
         console.log(this.settingsService.getGameSettings());
@@ -64,5 +66,9 @@ export class ChooseCharactersComponent implements OnInit
         // console.log(this.settingsService.getSettings());
     }
 
+    onSubmit()
+    {
+    	console.log('soumis');
+    }
 
 }

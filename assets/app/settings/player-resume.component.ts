@@ -12,16 +12,18 @@ import {SettingsService} from "./settings.service";
                         <hr>
                         <ul>
                             <li *ngFor="let number of playerNumbers">
-                                <span>Joueur {{number}} : {{this.settingsService.getSettings()['players'][number].name}}</span>
+                                <span>Joueur {{number}} : {{this.settingsService.getPlayerSettings(number).name}}</span>
                                 <br>
                             </li>
                         </ul>
                         <hr>
                         <div>
-                            <span>Le premier qui commencera sera le joueur {{this.first}} : {{ this.settingsService.getSettings()['players'][this.first].name }}</span>
+                            <span>Le premier qui commencera sera le joueur {{this.first}} :
+                            {{ this.settingsService.getPlayerSettings(this.first).name }}</span>
                         </div>
                         <br>
                         <a [routerLink]="['/settings/chooseCharacters']" class="btn btn-info">Choisir les investigateurs</a>
+                         
                     </div>
                 </div>
             </div>
@@ -40,17 +42,18 @@ export class PlayerResumeComponent implements OnInit
 
     ngOnInit()
     {
+        // Define the number of player
+        this.playerNumber = this.settingsService.getGameSettings('number');
+
+        // Create an array with the number of each players
+        for(let i=1; i<= this.playerNumber; i++)
+            this.playerNumbers.push(i);
+        
         if(!this.settingsService.getGameSettings('first'))
         {
-            // Define the number of player
-            this.playerNumber = this.settingsService.getSettings()['game']['number'];
-            // Create an array with the number of each players
-            for(let i=1; i<= this.playerNumber; i++)
-                this.playerNumbers.push(i);
             // Define the first player
             this.first = this.settingsService.rand(1,this.playerNumber);
             this.settingsService.addSettingsProperty('game', 'first', this.first);
         }
     }
-
 }
